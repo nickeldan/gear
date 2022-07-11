@@ -34,7 +34,7 @@ gearAppend(gear *array, const void *item)
 
         success = realloc(array->data, array->item_size * new_capacity);
         if (!success) {
-            return GRR_RET_OUT_OF_MEMORY;
+            return GEAR_RET_OUT_OF_MEMORY;
         }
         array->data = success;
         array->capacity = new_capacity;
