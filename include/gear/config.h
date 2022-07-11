@@ -9,4 +9,4 @@
 #define GEAR_DEFAULT_EXPANSION 2
 #endif
 
-#endif // GENERAL_ARRAY_CONFIG_H
+#endif  // GENERAL_ARRAY_CONFIG_H
