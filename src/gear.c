@@ -40,7 +40,7 @@ gearAppend(gear *array, const void *item)
         array->capacity = new_capacity;
     }
 
-    memcpy((unsigned char *)array->data + array->item_size * array->length, item, array->item_size);
+    memcpy((char *)array->data + array->item_size * array->length, item, array->item_size);
     array->length++;
 
     return GEAR_RET_OK;

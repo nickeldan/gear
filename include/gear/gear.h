@@ -37,10 +37,10 @@ gearAppend(gear *array, const void *item);
 void
 gearFree(gear *array);
 
-#define GEAR_GET_ITEM(array, idx) ((void *)((unsigned char *)(array)->data + (idx) * (array)->item_size))
+#define GEAR_GET_ITEM(array, idx) ((void *)((char *)(array)->data + (idx) * (array)->item_size))
 
 #define GEAR_FOR_EACH(array, item)                                            \
     for (item = (array)->data; item != GEAR_GET_ITEM(array, (array)->length); \
-         item = (void *)((unsigned char *)item + (array)->item_size))
+         item = (void *)((char *)item + (array)->item_size))
 
 #endif  // GENERAL_ARRAY_H
