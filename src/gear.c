@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gear.h"
+#include <gear/gear.h>
 
 size_t
 gearDefaultExpander(size_t capacity)
@@ -55,5 +55,5 @@ gearFree(gear *array)
 
     free(array->data);
     array->data = NULL;
-    arracy->length = array->capacity = 0;
+    array->length = array->capacity = 0;
 }
