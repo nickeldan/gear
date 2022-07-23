@@ -1,0 +1,3 @@
+0.1.0:
+    - Arrays now can expand via either a function or set constants.
+    - Added the GEAR_FOR_EACH_WITH_INDEX macro.
