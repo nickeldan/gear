@@ -5,7 +5,7 @@
 
 #include "config.h"
 
-#define GEAR_VERSION "0.1.0"
+#define GEAR_VERSION "0.1.1"
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
@@ -58,8 +58,8 @@ gearSetExpansion(gear *array, gearExpansionMethod method, ...);
     for (item = (array)->_data; item != GEAR_GET_ITEM(array, (array)->length); \
          item = (void *)((char *)item + (array)->item_size))
 
-#define GEAR_FOR_EACH_WITH_INDEX(array, item, idx)            \
-    for (item = (array)->_data, idx = 0; idx < array->length; \
+#define GEAR_FOR_EACH_WITH_INDEX(array, item, idx)              \
+    for (item = (array)->_data, idx = 0; idx < (array)->length; \
          item = (void *)((char *)item + (array)->item_size), idx++)
 
 #endif  // GENERAL_ARRAY_H

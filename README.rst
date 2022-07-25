@@ -3,8 +3,8 @@ GEAR
 ====
 
 :Author: Daniel Walker
-:Version: 0.1.0
-:Date: 2022-07-22
+:Version: 0.1.1
+:Date: 2022-07-25
 
 The GEAR library provides self-expanding arrays of arbitrary types.
 
