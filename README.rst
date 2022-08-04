@@ -3,8 +3,8 @@ GEAR
 ====
 
 :Author: Daniel Walker
-:Version: 0.1.1
-:Date: 2022-07-25
+:Version: 0.2.0
+:Date: 2022-08-03
 
 The GEAR library provides self-expanding arrays of arbitrary types.
 
@@ -74,6 +74,16 @@ An array can have its data freed and its length set to zero by
 .. code-block:: c
 
     gearFree(&array);
+
+You can also concatenate two arrays as long as they have the same item size via
+
+.. code-block:: c
+
+    int
+    gearConcatenate(gear *dst, const gear *src);
+
+This function returns **GEAR_RET_OK** if successful and an error code otherwise.  Note that **src** is
+untouched.
 
 Expansion
 ---------

@@ -1,44 +1,102 @@
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <gear/gear.h>
 
+static size_t
+computeNewCapacity(const gear *array, size_t new_length)
+{
+    size_t capacity = array->_capacity;
+    bool use_expander = array->_use_expander;
+
+    if (capacity == 0 && !use_expander) {
+        capacity = array->_init_capacity;
+    }
+
+    while (capacity < new_length) {
+        size_t new_capacity;
+
+        if (use_expander) {
+            new_capacity = array->_expander(capacity);
+        }
+        else {
+            new_capacity = capacity + array->_expansion;
+        }
+
+        if (new_capacity < capacity) {
+            return 0;
+        }
+        capacity = new_capacity;
+    }
+
+    return capacity;
+}
+
+static int
+increaseCapacity(gear *array, size_t more)
+{
+    size_t new_length = array->item_size + more, new_capacity;
+    void *success;
+
+    if (new_length <= array->_capacity) {
+        return GEAR_RET_OK;
+    }
+
+    new_capacity = computeNewCapacity(array, new_length);
+    if (new_capacity == 0) {
+        return GEAR_RET_NO_EXPANSION;
+    }
+
+    success = realloc(array->_data, array->item_size * new_capacity);
+    if (!success) {
+        return GEAR_RET_OUT_OF_MEMORY;
+    }
+    array->_data = success;
+    array->_capacity = new_capacity;
+
+    return GEAR_RET_OK;
+}
+
 int
 gearAppend(gear *array, const void *item)
 {
+    int ret;
+
     if (!array || !item) {
         return GEAR_RET_BAD_USAGE;
     }
 
-    if (array->length == array->_capacity) {
-        void *success;
-        size_t new_capacity;
-
-        if (array->_use_expander) {
-            new_capacity = array->_expander(array->_capacity);
-        }
-        else if (array->_capacity == 0) {
-            new_capacity = array->_init_capacity;
-        }
-        else {
-            new_capacity = array->_capacity + array->_expansion;
-        }
-
-        if (new_capacity <= array->_capacity) {
-            return GEAR_RET_NO_EXPANSION;
-        }
-
-        success = realloc(array->_data, array->item_size * new_capacity);
-        if (!success) {
-            return GEAR_RET_OUT_OF_MEMORY;
-        }
-        array->_data = success;
-        array->_capacity = new_capacity;
+    ret = increaseCapacity(array, 1);
+    if (ret != GEAR_RET_OK) {
+        return ret;
     }
 
     memcpy((char *)array->_data + array->item_size * array->length, item, array->item_size);
     array->length++;
+
+    return GEAR_RET_OK;
+}
+
+int
+gearConcatenate(gear *dst, const gear *src)
+{
+    int ret;
+    size_t item_size;
+
+    if (!dst || !src || dst->item_size != src->item_size) {
+        return GEAR_RET_BAD_USAGE;
+    }
+    item_size = dst->item_size;
+
+    ret = increaseCapacity(dst, src->length);
+    if (ret != GEAR_RET_OK) {
+        return ret;
+    }
+
+    memcpy((char *)dst->_data + item_size * dst->length, src->_data, item_size * src->length);
+    dst->length += src->length;
 
     return GEAR_RET_OK;
 }

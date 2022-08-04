@@ -5,7 +5,7 @@
 
 #include "config.h"
 
-#define GEAR_VERSION "0.1.1"
+#define GEAR_VERSION "0.2.0"
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
@@ -45,6 +45,9 @@ typedef struct gear {
 
 int
 gearAppend(gear *array, const void *item);
+
+int
+gearConcatenate(gear *dst, const gear *src);
 
 void
 gearFree(gear *array);

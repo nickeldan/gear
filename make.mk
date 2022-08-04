@@ -25,7 +25,7 @@ include $(GEAR_DEPS_FILE)
 endif
 
 $(GEAR_SHARED_LIBRARY): $(GEAR_OBJECT_FILES)
-	$(CC) -shared -o $@ $^
+	$(CC) $(LDFLAGS) -shared -o $@ $^
 
 $(GEAR_STATIC_LIBRARY): $(GEAR_OBJECT_FILES)
 	$(AR) rcs $@ $^
