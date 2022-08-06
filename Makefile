@@ -18,7 +18,7 @@ include make.mk
 _all: $(GEAR_SHARED_LIBRARY) $(GEAR_STATIC_LIBRARY) tests
 
 format:
-	find . -name '*.[hc]' -print0 | xargs -0 clang-format -i
+	find . -name '*.[hc]' -print0 | xargs -0 -n 1 clang-format -i
 
 install: /usr/local/lib/$(notdir $(GEAR_SHARED_LIBRARY)) $(foreach file,$(GEAR_HEADER_FILES),/usr/local/include/reap/$(notdir $(file)))
 
