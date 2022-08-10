@@ -5,7 +5,7 @@
 
 #include "config.h"
 
-#define GEAR_VERSION "0.2.0"
+#define GEAR_VERSION "0.3.0"
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
@@ -25,8 +25,8 @@ typedef struct gear {
     union {
         gearExpander _expander;
         struct {
-            size_t _init_capacity;
-            size_t _expansion;
+            unsigned int _init_capacity;
+            unsigned int _expansion;
         };
     };
     void *_data;

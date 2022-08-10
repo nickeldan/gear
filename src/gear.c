@@ -73,7 +73,7 @@ gearAppend(gear *array, const void *item)
         return ret;
     }
 
-    memcpy((char *)array->_data + array->item_size * array->length, item, array->item_size);
+    memcpy(GEAR_GET_ITEM(array, array->length), item, array->item_size);
     array->length++;
 
     return GEAR_RET_OK;
@@ -95,7 +95,7 @@ gearConcatenate(gear *dst, const gear *src)
         return ret;
     }
 
-    memcpy((char *)dst->_data + item_size * dst->length, src->_data, item_size * src->length);
+    memcpy(GEAR_GET_ITEM(dst, dst->length), src->_data, item_size * src->length);
     dst->length += src->length;
 
     return GEAR_RET_OK;
@@ -126,10 +126,10 @@ gearSetExpansion(gear *array, gearExpansionMethod method, ...)
     va_start(args, method);
 
     if (method == GEAR_EXP_CONSTANTS) {
-        size_t init_capacity, expansion;
+        unsigned int init_capacity, expansion;
 
-        init_capacity = va_arg(args, size_t);
-        expansion = va_arg(args, size_t);
+        init_capacity = va_arg(args, unsigned int);
+        expansion = va_arg(args, unsigned int);
         if (init_capacity == 0 || expansion == 0) {
             goto done;
         }

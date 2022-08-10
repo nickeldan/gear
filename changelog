@@ -1,3 +1,6 @@
+0.3.0:
+    - Changed the GEAR_EXP_CONSTANTS parameter type from size_t to unsigned int.
+
 0.2.0:
     - Added the gearConcatenate function.
 

@@ -3,8 +3,8 @@ GEAR
 ====
 
 :Author: Daniel Walker
-:Version: 0.2.0
-:Date: 2022-08-03
+:Version: 0.3.0
+:Date: 2022-08-09
 
 The GEAR library provides self-expanding arrays of arbitrary types.
 
@@ -93,10 +93,10 @@ many elements the array can currently hold without needing to allocate more memo
 from which you can select to determine how the capacity is expanded when needed.
 
 The first method, which is set by default when an array is initialized with **GEAR_INIT**, uses two
-**size_t** constants, both of which must be positive.  The first specifies an initial capacity.  That is, it
-specifies what the capacity will be set to when the first item is appended to the array.  The second constant
-specifies by how much the capacity will be increased when it is filled up.  The default values of these
-constants are defined in gear/config.h.
+**unsigned int** constants, both of which must be positive.  The first specifies an initial capacity.  That
+is, it specifies what the capacity will be set to when the first item is appended to the array.  The second
+constant specifies by how much the capacity will be increased when it is filled up.  The default values of
+these constants are defined in gear/config.h.
 
 The second method uses a user-provided function pointer.  Specifically,
 
