@@ -1,3 +1,8 @@
+0.4.0:
+    - Split gearSetExpansion into two functions.
+    - Added GEAR_OBJ_DIR to make.mk.
+    - Fixed some typos in the Makefile.
+
 0.3.0:
     - Changed the GEAR_EXP_CONSTANTS parameter type from size_t to unsigned int.
 

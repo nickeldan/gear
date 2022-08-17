@@ -3,8 +3,8 @@ GEAR
 ====
 
 :Author: Daniel Walker
-:Version: 0.3.0
-:Date: 2022-08-09
+:Version: 0.4.0
+:Date: 2022-08-16
 
 The GEAR library provides self-expanding arrays of arbitrary types.
 
@@ -110,21 +110,21 @@ current.  If the function returns the latter, that will tell **gearAppend** that
 further and **gearAppend** will return **GEAR_RET_NO_EXPANSION** to the caller.  You can use this as a method
 of imposing a limit on the array's length.
 
-The expansion method and associated parameter(s) can be set by
+The expansion method and associated parameter(s) can be set by the two functions
 
 .. code-block:: c
 
     int
-    gearSetExpansion(gear *array, gearExpansionMethod method, ...);
+    gearSetExpansion(gear *array, unsigned int init_capacity, unsigned int expansion);
 
-This function returns **GEAR_RET_OK** if successful and **GEAR_RET_BAD_USAGE** if the arguments are invalid.
-**gearExpansionMethod** is an enum type.  For example,
+and
 
 .. code-block:: c
 
-    gearSetExpansion(&array, GEAR_EXP_CONSTANTS, 5, 10); // Initial capacity of 5 with an expansion of 10
+    int
+    gearSetExpander(gear *array, gearExpander expander);
 
-    gearSetExpansion(&array, GEAR_EXP_FUNCTION, someFunc);
+These function return **GEAR_RET_OK** if successful and **GEAR_RET_BAD_USAGE** if the arguments are invalid.
 
 **gearFree** preserves the changes made by **gearSetExpansion**.
 
@@ -137,6 +137,8 @@ optimization and build the libraries with debugging symbols.
 You can also include GEAR in a larger project by including make.mk.  Before doing so, however, the
 **GEAR_DIR** variable must be set to the location of the GEAR directory.  You can also tell make where to
 place the shared and static libraries by defining the **GEAR_LIB_DIR** variable (defaults to **GEAR_DIR**).
+Similarly, you can define the **GEAR_OBJ_DIR** variable which tells make where to place the object files
+(defaults to **GEAR_DIR**/src).
 
 make.mk adds a target to the **CLEAN_TARGETS** variable.  This is so that implementing
 

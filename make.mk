@@ -1,13 +1,13 @@
 GEAR_LIB_DIR ?= $(GEAR_DIR)
 GEAR_OBJ_DIR ?= $(GEAR_DIR)/src
+
 GEAR_SHARED_LIBRARY := $(GEAR_LIB_DIR)/libgear.so
 GEAR_STATIC_LIBRARY := $(GEAR_LIB_DIR)/libgear.a
 
 GEAR_SOURCE_FILES := $(wildcard $(GEAR_DIR)/src/*.c)
 GEAR_OBJECT_FILES := $(patsubst $(GEAR_DIR)/src/%.c,$(GEAR_OBJ_DIR)/%.o,$(GEAR_SOURCE_FILES))
 GEAR_HEADER_FILES := $(wildcard $(GEAR_DIR)/include/gear/*.h) 
-GEAR_INCLUDE_DIR := $(GEAR_DIR)/include
-GEAR_INCLUDE_FLAGS := -I$(GEAR_INCLUDE_DIR) 
+GEAR_INCLUDE_FLAGS := -I$(GEAR_DIR)/include
 
 GEAR_DEPS_FILE := $(GEAR_DIR)/deps.mk
 DEPS_FILES += $(GEAR_DEPS_FILE)

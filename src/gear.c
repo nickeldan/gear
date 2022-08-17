@@ -1,4 +1,3 @@
-#include <stdarg.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -114,47 +113,28 @@ gearFree(gear *array)
 }
 
 int
-gearSetExpansion(gear *array, gearExpansionMethod method, ...)
+gearSetExpansion(gear *array, unsigned int init_capacity, unsigned int expansion)
 {
-    int ret = GEAR_RET_BAD_USAGE;
-    va_list args;
-
-    if (!array) {
+    if (!array || init_capacity == 0 || expansion == 0) {
         return GEAR_RET_BAD_USAGE;
     }
 
-    va_start(args, method);
+    array->_init_capacity = init_capacity;
+    array->_expansion = expansion;
+    array->_use_expander = 0;
 
-    if (method == GEAR_EXP_CONSTANTS) {
-        unsigned int init_capacity, expansion;
+    return GEAR_RET_OK;
+}
 
-        init_capacity = va_arg(args, unsigned int);
-        expansion = va_arg(args, unsigned int);
-        if (init_capacity == 0 || expansion == 0) {
-            goto done;
-        }
-
-        array->_init_capacity = init_capacity;
-        array->_expansion = expansion;
-        array->_use_expander = 0;
-    }
-    else if (method == GEAR_EXP_FUNCTION) {
-        gearExpander expander;
-
-        expander = va_arg(args, gearExpander);
-        if (!expander) {
-            goto done;
-        }
-        array->_expander = expander;
-        array->_use_expander = 1;
-    }
-    else {
-        goto done;
+int
+gearSetExpander(gear *array, gearExpander expander)
+{
+    if (!array || !expander) {
+        return GEAR_RET_BAD_USAGE;
     }
 
-    ret = GEAR_RET_OK;
+    array->_expander = expander;
+    array->_use_expander = 1;
 
-done:
-    va_end(args);
-    return ret;
+    return GEAR_RET_OK;
 }

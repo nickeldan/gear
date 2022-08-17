@@ -5,7 +5,7 @@
 
 #include "config.h"
 
-#define GEAR_VERSION "0.3.0"
+#define GEAR_VERSION "0.4.0"
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
@@ -13,11 +13,6 @@ enum gearRetValue {
     GEAR_RET_OUT_OF_MEMORY,
     GEAR_RET_NO_EXPANSION,
 };
-
-typedef enum gearExpansionMethod {
-    GEAR_EXP_CONSTANTS,
-    GEAR_EXP_FUNCTION,
-} gearExpansionMethod;
 
 typedef size_t (*gearExpander)(size_t);
 
@@ -53,7 +48,10 @@ void
 gearFree(gear *array);
 
 int
-gearSetExpansion(gear *array, gearExpansionMethod method, ...);
+gearSetExpansion(gear *array, unsigned int init_capacity, unsigned int expansion);
+
+int
+gearSetExpander(gear *array, gearExpander expander);
 
 #define GEAR_GET_ITEM(array, idx) ((void *)((char *)(array)->_data + (idx) * (array)->item_size))
 
