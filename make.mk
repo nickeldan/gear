@@ -9,7 +9,7 @@ GEAR_OBJECT_FILES := $(patsubst $(GEAR_DIR)/src/%.c,$(GEAR_OBJ_DIR)/%.o,$(GEAR_S
 GEAR_HEADER_FILES := $(wildcard $(GEAR_DIR)/include/gear/*.h)
 GEAR_INCLUDE_FLAGS := -I$(GEAR_DIR)/include
 
-GEAR_DEPS_FILE := $(GEAR_DIR)/deps.mk
+GEAR_DEPS_FILE := $(GEAR_OBJ_DIR)/deps.mk
 DEPS_FILES += $(GEAR_DEPS_FILE)
 
 BUILD_DEPS ?= $(if $(MAKECMDGOALS),$(subst clean,,$(MAKECMDGOALS)),yes)
