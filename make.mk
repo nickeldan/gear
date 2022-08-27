@@ -17,7 +17,8 @@ BUILD_DEPS ?= $(if $(MAKECMDGOALS),$(subst clean,,$(MAKECMDGOALS)),yes)
 ifneq ($(BUILD_DEPS),)
 
 $(GEAR_DEPS_FILE): $(GEAR_SOURCE_FILES) $(GEAR_HEADER_FILES)
-	rm -f $@
+	@mkdir -p $(@D)
+	@rm -f $@
 	for file in $(GEAR_SOURCE_FILES); do \
 	    echo "$(GEAR_OBJ_DIR)/`$(CC) $(GEAR_INCLUDE_FLAGS) -MM $$file`" >> $@ && \
 	    echo '\t$$(CC) $$(CFLAGS) -fpic -ffunction-sections $(GEAR_INCLUDE_FLAGS) -c $$< -o $$@' >> $@; \
@@ -27,9 +28,11 @@ include $(GEAR_DEPS_FILE)
 endif
 
 $(GEAR_SHARED_LIBRARY): $(GEAR_OBJECT_FILES)
+	@mkdir -p $(@D)
 	$(CC) $(LDFLAGS) -shared -o $@ $^
 
 $(GEAR_STATIC_LIBRARY): $(GEAR_OBJECT_FILES)
+	@mkdir -p $(@D)
 	$(AR) rcs $@ $^
 
 gear_clean:
