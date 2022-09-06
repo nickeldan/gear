@@ -1,3 +1,6 @@
+ifndef GEAR_MK
+GEAR_MK :=
+
 GEAR_LIB_DIR ?= $(GEAR_DIR)
 GEAR_OBJ_DIR ?= $(GEAR_DIR)/src
 
@@ -39,3 +42,5 @@ gear_clean:
 	@rm -f $(GEAR_SHARED_LIBRARY) $(GEAR_STATIC_LIBRARY) $(GEAR_OBJECT_FILES)
 
 CLEAN_TARGETS += gear_clean
+
+endif

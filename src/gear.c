@@ -36,7 +36,7 @@ computeNewCapacity(const gear *array, size_t new_length)
 static int
 increaseCapacity(gear *array, size_t more)
 {
-    size_t new_length = array->item_size + more, new_capacity;
+    size_t new_length = array->length + more, new_capacity;
     void *success;
 
     if (new_length <= array->_capacity) {

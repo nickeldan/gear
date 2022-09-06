@@ -5,7 +5,7 @@
 
 #include "config.h"
 
-#define GEAR_VERSION "0.4.0"
+#define GEAR_VERSION "0.4.1"
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
