@@ -3,8 +3,8 @@ GEAR
 ====
 
 :Author: Daniel Walker
-:Version: 0.4.1
-:Date: 2022-09-05
+:Version: 0.5.0
+:Date: 2022-11-26
 
 The GEAR library provides self-expanding arrays of arbitrary types.
 
@@ -17,11 +17,13 @@ You can access GEAR's functionality by
 
     #include <gear/gear.h>
 
-In order to create an array of, say, integers, declare
+In order to create an array of, say, integers, do
 
 .. code-block:: c
 
-    gear array = GEAR_INIT(int);
+    gear array;
+
+    gearInit(&array, sizeof(int));
 
 A new object can be appended to the array by
 
@@ -69,11 +71,11 @@ If you want to iterate with an index, do
         printf("%zu: %i\n", idx, *p);
     }
 
-An array can have its data freed and its length set to zero by
+An array can have its data freed and its length/capacity set to zero by
 
 .. code-block:: c
 
-    gearFree(&array);
+    gearReset(&array);
 
 You can also concatenate two arrays as long as they have the same item size via
 

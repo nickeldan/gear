@@ -1,3 +1,7 @@
+0.5.0:
+    - Replaced GEAR_INIT macro with gearInit function.
+    - Renamed gearFree to gearReset.
+
 0.4.1:
     - Fixed a typo in the memory allocation logic.
     - Added an include guard to make.mk.

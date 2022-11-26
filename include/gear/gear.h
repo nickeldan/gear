@@ -3,9 +3,7 @@
 
 #include <sys/types.h>
 
-#include "config.h"
-
-#define GEAR_VERSION "0.4.1"
+#define GEAR_VERSION "0.5.0"
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
@@ -31,12 +29,8 @@ typedef struct gear {
     unsigned int _use_expander : 1;
 } gear;
 
-#define GEAR_INIT(type)                                                                     \
-    (gear)                                                                                  \
-    {                                                                                       \
-        ._init_capacity = GEAR_DEFAULT_INIT_CAPACITY, ._expansion = GEAR_DEFAULT_EXPANSION, \
-        .item_size = sizeof(type)                                                           \
-    }
+void
+gearInit(gear *array, size_t item_size);
 
 int
 gearAppend(gear *array, const void *item);
@@ -45,7 +39,7 @@ int
 gearConcatenate(gear *dst, const gear *src);
 
 void
-gearFree(gear *array);
+gearReset(gear *array);
 
 int
 gearSetExpansion(gear *array, unsigned int init_capacity, unsigned int expansion);

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <gear/config.h>
 #include <gear/gear.h>
 
 static size_t
@@ -58,6 +59,19 @@ increaseCapacity(gear *array, size_t more)
     return GEAR_RET_OK;
 }
 
+void
+gearInit(gear *array, size_t item_size)
+{
+    if (!array || item_size == 0) {
+        return;
+    }
+
+    *array = (gear){0};
+    array->item_size = item_size;
+    array->_init_capacity = GEAR_DEFAULT_INIT_CAPACITY;
+    array->_expansion = GEAR_DEFAULT_EXPANSION;
+}
+
 int
 gearAppend(gear *array, const void *item)
 {
@@ -101,7 +115,7 @@ gearConcatenate(gear *dst, const gear *src)
 }
 
 void
-gearFree(gear *array)
+gearReset(gear *array)
 {
     if (!array) {
         return;
