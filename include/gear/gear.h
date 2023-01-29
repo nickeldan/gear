@@ -12,11 +12,11 @@ enum gearRetValue {
     GEAR_RET_NO_EXPANSION,
 };
 
-typedef size_t (*gearExpander)(size_t);
+typedef size_t gearExpander(size_t);
 
 typedef struct gear {
     union {
-        gearExpander _expander;
+        gearExpander *_expander;
         struct {
             unsigned int _init_capacity;
             unsigned int _expansion;
