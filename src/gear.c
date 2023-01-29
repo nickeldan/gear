@@ -93,25 +93,33 @@ gearAppend(gear *array, const void *item)
 }
 
 int
-gearConcatenate(gear *dst, const gear *src)
+gearLoad(gear *array, const void *src, size_t num_items)
 {
     int ret;
-    size_t item_size;
 
-    if (!dst || !src || dst->item_size != src->item_size) {
+    if (!array || !src) {
         return GEAR_RET_BAD_USAGE;
     }
-    item_size = dst->item_size;
 
-    ret = increaseCapacity(dst, src->length);
+    ret = increaseCapacity(array, num_items);
     if (ret != GEAR_RET_OK) {
         return ret;
     }
 
-    memcpy(GEAR_GET_ITEM(dst, dst->length), src->_data, item_size * src->length);
-    dst->length += src->length;
+    memcpy(GEAR_GET_ITEM(array, array->length), src, array->item_size * num_items);
+    array->length += num_items;
 
     return GEAR_RET_OK;
+}
+
+int
+gearConcatenate(gear *dst, const gear *src)
+{
+    if (!dst || !src || dst->item_size != src->item_size) {
+        return GEAR_RET_BAD_USAGE;
+    }
+
+    return gearLoad(dst, src->_data, src->length);
 }
 
 void

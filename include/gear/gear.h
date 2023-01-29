@@ -36,6 +36,9 @@ int
 gearAppend(gear *array, const void *item);
 
 int
+gearLoad(gear *array, const void *src, size_t num_items);
+
+int
 gearConcatenate(gear *dst, const gear *src);
 
 void
