@@ -93,6 +93,25 @@ gearAppend(gear *array, const void *item)
 }
 
 int
+gearPop(gear *array, size_t idx, void *item)
+{
+    void *ptr;
+
+    if (!array || idx >= array->length) {
+        return GEAR_RET_BAD_USAGE;
+    }
+
+    ptr = GEAR_GET_ITEM(array, idx);
+    if (item) {
+        memcpy(item, ptr, array->item_size);
+    }
+    memmove(ptr, GEAR_GET_ITEM(array, idx + 1), array->item_size * (array->length - idx - 1));
+    array->length--;
+
+    return GEAR_RET_OK;
+}
+
+int
 gearLoad(gear *array, const void *src, size_t num_items)
 {
     int ret;

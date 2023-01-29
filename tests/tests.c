@@ -149,6 +149,28 @@ testLoad(void)
 }
 
 static void
+testPop(void)
+{
+    int num = 0;
+    int nums1[] = {1, 2, 3, 4, 5, 6}, nums2[] = {1, 2, 4, 5, 6}, nums3[] = {1, 2, 4, 6};
+    gear array;
+
+    gearInit(&array, sizeof(int));
+    SCR_ASSERT_EQ(gearLoad(&array, nums1, 6), GEAR_RET_OK);
+
+    SCR_ASSERT_EQ(gearPop(NULL, 0, NULL), GEAR_RET_BAD_USAGE);
+    SCR_ASSERT_EQ(gearPop(&array, 6, NULL), GEAR_RET_BAD_USAGE);
+
+    SCR_ASSERT_EQ(gearPop(&array, 2, NULL), GEAR_RET_OK);
+    SCR_ASSERT_EQ(array.length, 5);
+    SCR_ASSERT_MEM_EQ(GEAR_GET_ITEM(&array, 0), nums2, sizeof(int) * 5);
+
+    SCR_ASSERT_EQ(gearPop(&array, 3, &num), GEAR_RET_OK);
+    SCR_ASSERT_MEM_EQ(GEAR_GET_ITEM(&array, 0), nums3, sizeof(int) * 4);
+    SCR_ASSERT_EQ(num, 5);
+}
+
+static void
 testConcatenate(void)
 {
     int nums[] = {1, 2, 3, 4, 5, 6};
@@ -192,6 +214,7 @@ main()
     scrGroupAddTest(group, "Iteration", testIteration, 0, 0);
     scrGroupAddTest(group, "Iteration with index", testIterationWithIndex, 0, 0);
     scrGroupAddTest(group, "Load", testLoad, 0, 0);
+    scrGroupAddTest(group, "Pop", testPop, 0, 0);
     scrGroupAddTest(group, "Concatenate", testConcatenate, 0, 0);
 
     ret = scrRunnerRun(runner, NULL, NULL);
