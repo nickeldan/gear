@@ -13,7 +13,10 @@ all: _all
 GEAR_DIR := .
 include make.mk
 
-.PHONY: all _all format install uninstall clean $(CLEAN_TARGETS)
+TEST_DIR := tests
+include $(TEST_DIR)/make.mk
+
+.PHONY: all _all format tests install uninstall clean $(CLEAN_TARGETS)
 
 _all: $(GEAR_SHARED_LIBRARY) $(GEAR_STATIC_LIBRARY)
 
@@ -24,16 +27,16 @@ install: /usr/local/lib/$(notdir $(GEAR_SHARED_LIBRARY)) $(foreach file,$(GEAR_H
 
 /usr/local/lib/$(notdir $(GEAR_SHARED_LIBRARY)): $(GEAR_SHARED_LIBRARY)
 	cp $< $@
+	ldconfig
 
 /usr/local/include/gear/%.h: include/gear/%.h /usr/local/include/gear
+	@mkdir -p $(@D)
 	cp $< $@
-
-/usr/local/include/gear:
-	mkdir -p $@
 
 uninstall:
 	rm -rf /usr/local/include/gear
 	rm -f /usr/local/lib/$(notdir $(GEAR_SHARED_LIBRARY))
+	ldconfig
 
 clean: $(CLEAN_TARGETS)
 	@rm -f $(DEPS_FILES)
