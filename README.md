@@ -39,6 +39,8 @@ int *p;
 p = GEAR_GET_ITEM(&array, some_index);
 ```
 
+Note that the elements of the array are stored contiguously in memory.
+
 You can also iterate over the elements of the array via
 
 ```c
@@ -68,14 +70,40 @@ gearReset(&array);
 
 Note that `array.item_size` will be unchanged.
 
+You can copy data from memory to the end of an array via
+
+```c
+int
+gearLoad(gear *array, const void *src, size_t num_items);
+```
+
+You may remove an element from an array via
+
+```c
+int
+gearPop(gear *array, size_t idx, void *item);
+```
+
+For example,
+
+```c
+gear array;
+int nums[] = {1, 2, 3, 4, 5, 6};
+
+gearInit(&array, sizeof(int));
+gearLoad(&array, nums, 6);
+gearPop(&array, 3, NULL);
+// The array now holds 1, 2, 3, 5, 6.
+```
+
+If `item` is not `NULL`, then the removed item will copied to that address.
+
 You can also concatenate two arrays as long as they have the same item size via
 
 ```c
 int
 gearConcatenate(gear *dst, const gear *src);
 ```
-
-This function returns `GEAR_RET_OK` if successful and an error code otherwise.  Note that `src` is untouched.
 
 Expansion
 ---------

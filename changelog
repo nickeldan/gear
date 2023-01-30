@@ -1,3 +1,7 @@
+
+0.6.0:
+    - Added the gearLoad and gearPop functions.
+    - Added Scrutiny testing.
 0.5.0:
     - Replaced GEAR_INIT macro with gearInit function.
     - Renamed gearFree to gearReset.
