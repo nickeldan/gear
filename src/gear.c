@@ -6,30 +6,40 @@
 #include <gear/gear.h>
 
 static size_t
-computeNewCapacity(const gear *array, size_t new_length)
+useExpander(gearExpander expander, size_t capacity, size_t new_length)
 {
-    size_t capacity = array->_capacity;
-    bool use_expander = array->_use_expander;
-
-    if (capacity == 0 && !use_expander) {
-        capacity = array->_init_capacity;
-    }
-
-    while (capacity < new_length) {
+    do {
         size_t new_capacity;
 
-        if (use_expander) {
-            new_capacity = array->_expander(capacity);
-        }
-        else {
-            new_capacity = capacity + array->_expansion;
-        }
-
+        new_capacity = expander(capacity);
         if (new_capacity < capacity) {
             return 0;
         }
         capacity = new_capacity;
+    } while (capacity < new_length);
+
+    return capacity;
+}
+
+static size_t
+computeNewCapacity(const gear *array, size_t new_length)
+{
+    size_t capacity, missing;
+
+    if (array->_use_expander) {
+        return useExpander(array->_expander, array->_capacity, new_length);
     }
+
+    capacity = array->_capacity;
+    if (capacity == 0) {
+        capacity = array->_init_capacity;
+        if (capacity >= new_length) {
+            return capacity;
+        }
+    }
+    missing = new_length - capacity + array->_expansion - 1;
+    missing -= missing % array->_expansion;
+    capacity += missing;
 
     return capacity;
 }
@@ -45,7 +55,7 @@ increaseCapacity(gear *array, size_t more)
     }
 
     new_capacity = computeNewCapacity(array, new_length);
-    if (new_capacity == 0) {
+    if (new_capacity < new_length) {
         return GEAR_RET_NO_EXPANSION;
     }
 
@@ -73,23 +83,29 @@ gearInit(gear *array, size_t item_size)
 }
 
 int
-gearAppend(gear *array, const void *item)
+gearLoad(gear *array, const void *src, size_t num_items)
 {
     int ret;
 
-    if (!array || !item) {
+    if (!array || !src) {
         return GEAR_RET_BAD_USAGE;
     }
 
-    ret = increaseCapacity(array, 1);
+    ret = increaseCapacity(array, num_items);
     if (ret != GEAR_RET_OK) {
         return ret;
     }
 
-    memcpy(GEAR_GET_ITEM(array, array->length), item, array->item_size);
-    array->length++;
+    memcpy(GEAR_GET_ITEM(array, array->length), src, array->item_size * num_items);
+    array->length += num_items;
 
     return GEAR_RET_OK;
+}
+
+int
+gearAppend(gear *array, const void *item)
+{
+    return gearLoad(array, item, 1);
 }
 
 int
@@ -107,26 +123,6 @@ gearPop(gear *array, size_t idx, void *item)
     }
     memmove(ptr, GEAR_GET_ITEM(array, idx + 1), array->item_size * (array->length - idx - 1));
     array->length--;
-
-    return GEAR_RET_OK;
-}
-
-int
-gearLoad(gear *array, const void *src, size_t num_items)
-{
-    int ret;
-
-    if (!array || !src) {
-        return GEAR_RET_BAD_USAGE;
-    }
-
-    ret = increaseCapacity(array, num_items);
-    if (ret != GEAR_RET_OK) {
-        return ret;
-    }
-
-    memcpy(GEAR_GET_ITEM(array, array->length), src, array->item_size * num_items);
-    array->length += num_items;
 
     return GEAR_RET_OK;
 }

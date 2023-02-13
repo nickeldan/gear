@@ -168,6 +168,8 @@ testPop(void)
     SCR_ASSERT_EQ(gearPop(&array, 3, &num), GEAR_RET_OK);
     SCR_ASSERT_MEM_EQ(GEAR_GET_ITEM(&array, 0), nums3, sizeof(int) * 4);
     SCR_ASSERT_EQ(num, 5);
+
+    gearReset(&array);
 }
 
 static void
