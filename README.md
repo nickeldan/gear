@@ -178,7 +178,7 @@ to uninstall.
 Testing
 =======
 
-Testing can be performed through the [Scrutiny framework](https://github.com/nickeldan/scrutiny).  After installing at least version 0.3.1 of the framework, you can run GEAR's tests by
+Testing can be performed through the [Scrutiny framework](https://github.com/nickeldan/scrutiny).  After installing at least version 0.4.0 of the framework, you can run GEAR's tests by
 
 ```sh
 make tests
