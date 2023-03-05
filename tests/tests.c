@@ -202,13 +202,11 @@ testConcatenate(void)
 int
 main()
 {
-    int ret;
-    scrRunner *runner;
     scrGroup *group;
 
-    runner = scrRunnerCreate();
+    scrInit();
 
-    group = scrGroupCreate(runner, NULL, NULL);
+    group = scrGroupCreate(NULL, NULL);
     scrGroupAddTest(group, "Initialize", testInit, 0, 0);
     scrGroupAddTest(group, "Append", testAppend, 0, 0);
     scrGroupAddTest(group, "Invalid expansion", testInvalidExpansion, 0, 0);
@@ -219,7 +217,5 @@ main()
     scrGroupAddTest(group, "Pop", testPop, 0, 0);
     scrGroupAddTest(group, "Concatenate", testConcatenate, 0, 0);
 
-    ret = scrRunnerRun(runner, NULL, NULL);
-    scrRunnerDestroy(runner);
-    return ret;
+    return scrRun(NULL, NULL);
 }
