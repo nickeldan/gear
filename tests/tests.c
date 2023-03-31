@@ -9,6 +9,13 @@ shortExpander(size_t capacity)
     return (capacity < 10) ? capacity + 2 : 0;
 }
 
+static size_t
+veryShortExpander(size_t capacity)
+{
+    (void)capacity;
+    return 1;
+}
+
 static void
 testInit(void)
 {
@@ -69,6 +76,12 @@ testExpander(void)
         SCR_ASSERT_EQ(gearAppend(&array, &num), GEAR_RET_OK);
     }
 
+    SCR_ASSERT_EQ(gearAppend(&array, &num), GEAR_RET_NO_EXPANSION);
+
+    gearReset(&array);
+
+    gearSetExpander(&array, veryShortExpander);
+    SCR_ASSERT_EQ(gearAppend(&array, &num), GEAR_RET_OK);
     SCR_ASSERT_EQ(gearAppend(&array, &num), GEAR_RET_NO_EXPANSION);
 
     gearReset(&array);
@@ -204,18 +217,16 @@ main()
 {
     scrGroup *group;
 
-    scrInit();
-
     group = scrGroupCreate(NULL, NULL);
-    scrGroupAddTest(group, "Initialize", testInit, 0, 0);
-    scrGroupAddTest(group, "Append", testAppend, 0, 0);
-    scrGroupAddTest(group, "Invalid expansion", testInvalidExpansion, 0, 0);
-    scrGroupAddTest(group, "Expander", testExpander, 0, 0);
-    scrGroupAddTest(group, "Iteration", testIteration, 0, 0);
-    scrGroupAddTest(group, "Iteration with index", testIterationWithIndex, 0, 0);
-    scrGroupAddTest(group, "Load", testLoad, 0, 0);
-    scrGroupAddTest(group, "Pop", testPop, 0, 0);
-    scrGroupAddTest(group, "Concatenate", testConcatenate, 0, 0);
+    scrGroupAddTest(group, "Initialize", testInit, 1, 0);
+    scrGroupAddTest(group, "Append", testAppend, 1, 0);
+    scrGroupAddTest(group, "Invalid expansion", testInvalidExpansion, 1, 0);
+    scrGroupAddTest(group, "Expander", testExpander, 1, 0);
+    scrGroupAddTest(group, "Iteration", testIteration, 1, 0);
+    scrGroupAddTest(group, "Iteration with index", testIterationWithIndex, 1, 0);
+    scrGroupAddTest(group, "Load", testLoad, 1, 0);
+    scrGroupAddTest(group, "Pop", testPop, 1, 0);
+    scrGroupAddTest(group, "Concatenate", testConcatenate, 1, 0);
 
     return scrRun(NULL, NULL);
 }
