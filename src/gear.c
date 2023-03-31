@@ -12,7 +12,7 @@ useExpander(gearExpander expander, size_t capacity, size_t new_length)
         size_t new_capacity;
 
         new_capacity = expander(capacity);
-        if (new_capacity < capacity) {
+        if (new_capacity <= capacity) {
             return 0;
         }
         capacity = new_capacity;

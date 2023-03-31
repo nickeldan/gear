@@ -3,7 +3,7 @@
 
 #include <sys/types.h>
 
-#define GEAR_VERSION "0.6.0"
+#define GEAR_VERSION "0.6.1"
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
