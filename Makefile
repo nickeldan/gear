@@ -1,7 +1,4 @@
-CC ?= gcc
-debug ?= no
-
-CFLAGS := -std=gnu11 -fdiagnostics-color -Wall -Wextra
+CFLAGS := -std=gnu11 -fdiagnostics-color -Wall -Wextra -fvisibility=hidden
 ifeq ($(debug),yes)
     CFLAGS += -O0 -g -DDEBUG
 else
@@ -9,6 +6,14 @@ else
 endif
 
 all: _all
+
+BUILD_DEPS :=
+ifeq ($(MAKECMDGOALS),clean)
+else ifeq ($(MAKECMDGOALS),format)
+else ifeq ($(MAKECMDGOALS),uninstall)
+else
+    BUILD_DEPS := yes
+endif
 
 GEAR_DIR := .
 include make.mk

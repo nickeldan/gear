@@ -3,7 +3,13 @@
 
 #include <sys/types.h>
 
-#define GEAR_VERSION "0.6.1"
+#define GEAR_VERSION "0.6.2"
+
+#if defined(__GNUC__) && !defined(GEAR_NO_EXPORT)
+#define GEAR_EXPORT __attribute__((visibility("default")))
+#else
+#define GEAR_EXPORT
+#endif
 
 enum gearRetValue {
     GEAR_RET_OK = 0,
@@ -30,28 +36,28 @@ typedef struct gear {
 } gear;
 
 void
-gearInit(gear *array, size_t item_size);
+gearInit(gear *array, size_t item_size) GEAR_EXPORT;
 
 int
-gearAppend(gear *array, const void *item);
+gearAppend(gear *array, const void *item) GEAR_EXPORT;
 
 int
-gearPop(gear *array, size_t idx, void *item);
+gearPop(gear *array, size_t idx, void *item) GEAR_EXPORT;
 
 int
-gearLoad(gear *array, const void *src, size_t num_items);
+gearLoad(gear *array, const void *src, size_t num_items) GEAR_EXPORT;
 
 int
-gearConcatenate(gear *dst, const gear *src);
+gearConcatenate(gear *dst, const gear *src) GEAR_EXPORT;
 
 void
-gearReset(gear *array);
+gearReset(gear *array) GEAR_EXPORT;
 
 int
-gearSetExpansion(gear *array, unsigned int init_capacity, unsigned int expansion);
+gearSetExpansion(gear *array, unsigned int init_capacity, unsigned int expansion) GEAR_EXPORT;
 
 int
-gearSetExpander(gear *array, gearExpander expander);
+gearSetExpander(gear *array, gearExpander expander) GEAR_EXPORT;
 
 #define GEAR_GET_ITEM(array, idx) ((void *)((char *)(array)->_data + (idx) * (array)->item_size))
 
